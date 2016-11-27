@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+- 6
+before_script:
+- npm prune
+script:
+- npm run lint
+- npm run test:coverage
+- npm run build
+after_success:
+- npm run ci:coveralls
+deploy:
+  provider: npm
+  on:
+    repo: wikiwi/themer
+    tags: true
+    node: 6
+  skip_cleanup: true
+  email: vinh@wikiwi.io
+

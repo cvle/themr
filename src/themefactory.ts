@@ -13,11 +13,16 @@ export type ThemeFactory<TTheme, TProps, TVars> =
 
 let id = 0;
 
-export function createThemeFactory<TTheme, TProps, TVars, TRules extends () => any, TOptions>(
+export function createThemeFactory<
+  TTheme,
+  TProps,
+  TVars,
+  TRules extends (props?: TProps, vars?: TVars) => any,
+  TOptions>(
   rules: TRules,
   options: TOptions | {} = {},
 ): ThemeFactory<TTheme, TProps, TVars> {
   id++;
   return (transformer, props, vars = {} as any) =>
-    transformer(id, rules, options, { ...props as any, themeVars: vars });
+    transformer(id, rules, options, props, vars);
 }

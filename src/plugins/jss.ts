@@ -35,7 +35,9 @@ const plugin: PluginFactory<Options> = (pluginOptions = defaults()) =>
     const hash = createHash(JSON.stringify(rules.classes));
     let classNames = jssRuntime.cache[hash];
     if (!classNames) {
-      classNames = jss.createStyleSheet(rules.classes, options[ns]).classes;
+      const sheet = jss.createStyleSheet(rules.classes, options[ns]);
+      sheet.attach();
+      classNames = sheet.classes;
       jssRuntime.cache[hash] = classNames;
     }
     rules.classes = classNames;

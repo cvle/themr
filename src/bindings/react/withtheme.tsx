@@ -59,7 +59,7 @@ function computeTheme(
 ) {
   const { vars, transformer } = context.themer;
   const customTheme = props.theme;
-  const themeProps = mapPropsToTheme(props);
+  const themeProps = mapPropsToTheme ? mapPropsToTheme(props) : {};
   const transformed = themeFactory(transformer, themeProps, vars);
   return customTheme ? mergeTheme(transformed, customTheme) : transformed;
 }

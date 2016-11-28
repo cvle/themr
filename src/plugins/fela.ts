@@ -27,7 +27,7 @@ const defaults: () => Options = () => ({
 });
 
 const plugin: PluginFactory<Options> = (options = defaults()) =>
-  ({rules: {classes}, props, runtime}) => {
+  ({rules: {classes}, runtime}) => {
     if (!classes) { return; }
     if (!runtime[ns]) { runtime[ns] = { cache: {} } as Runtime; }
     const felaRuntime: Runtime = runtime[ns];

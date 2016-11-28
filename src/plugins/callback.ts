@@ -22,9 +22,9 @@ const defaults: () => Options = () => ({
 });
 
 const plugin: PluginFactory<Options> = (options = defaults()) =>
-  ({rules, props, runtime}) => {
+  ({rules, props, vars, runtime}) => {
     const {skip} = options;
-    resolveCallback(rules, props, skip);
+    resolveCallback(rules, props, vars, skip);
   };
 
 export default plugin;

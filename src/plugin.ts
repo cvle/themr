@@ -11,6 +11,7 @@ export interface Task {
   options: { [plugin: string]: any };
   id: number;
   props: any;
+  vars: any;
   runtime: { [plugin: string]: any };
 }
 

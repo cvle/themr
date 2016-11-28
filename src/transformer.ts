@@ -8,18 +8,23 @@
 
 import { Task, Plugin } from "./plugin";
 
-export type Transformer = (id: number, rules: () => any, options?: any, props?: any) => any;
+export type Transformer = (id: number, rules: () => any, options?: any, props?: any, vars?: any) => any;
 
 export function createTransformer(...plugins: Plugin[]): Transformer {
   const runtime: { [id: number]: any } = {};
-  return (id: number, rules: any, options = {}, props = {}) => {
+  return (id: number, rules: any, options = {}, props = {}, vars = {}) => {
     if (!runtime[id]) { runtime[id] = {}; }
     const task: Task = {
-      id, options, props,
-      rules: rules(),
+      id, options,
+      props,
+      vars,
+      rules: rules(props, vars),
       runtime: runtime[id],
     };
     plugins.forEach((t) => t(task));
+    if (!task.rules.styles) { task.rules.styles = {}; }
+    if (!task.rules.classes) { task.rules.classes = {}; }
+    if (!task.rules.themes) { task.rules.themes = {}; }
     return task.rules;
   };
 }

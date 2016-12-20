@@ -1,14 +1,14 @@
 {
-  "name": "themer",
+  "name": "themr",
   "version": "0.1.0-alpha",
   "description": "Theming solution for React-like frameworks",
-  "homepage": "https://github.com/wikiwi/themer",
+  "homepage": "https://github.com/wikiwi/themr",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wikiwi/themer.git"
+    "url": "git+https://github.com/wikiwi/themr.git"
   },
   "bugs": {
-    "url": "https://github.com/wikiwi/themer/issues"
+    "url": "https://github.com/wikiwi/themr/issues"
   },
   "files": [
     "dist",
@@ -22,7 +22,7 @@
     "build": "gulp && webpack",
     "clean": "rm -r -f dist lib cjs coverage",
     "ci:coveralls": "cat coverage/lcov.info | coveralls",
-    "release": "npm version -m 'themer release %s'",
+    "release": "npm version -m 'themr release %s'",
     "lint": "gulp lint",
     "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha --opts mocha.opts",
     "test:coverage": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' istanbul cover node_modules/.bin/_mocha -- --opts mocha.opts",
@@ -32,11 +32,10 @@
     "node": ">=4"
   },
   "keywords": [
-    "jss",
     "theme",
     "react"
   ],
-  "author": "Chi Vinh Le and contributors (https://github.com/wikiwi/themer/graphs/contributors)",
+  "author": "Chi Vinh Le and contributors (https://github.com/wikiwi/themr/graphs/contributors)",
   "license": "MIT",
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-0"

@@ -8,7 +8,7 @@
 
 import * as React from "react";
 
-import { ThemerProvider, ThemerContext } from "./themerprovider";
+import { ThemrProvider, ThemrContext } from "./themrProvider";
 import { ThemeFactory, Transformer } from "../../index";
 import { mergeTheme } from "./utils";
 
@@ -28,12 +28,12 @@ export function withTheme<
 ): Decorator<TProps, TProps> {
   return (TargetComponent: DecoratorTarget<TProps>) => {
     const enhanced = class WithTheme extends React.Component<TProps, void> {
-      public static contextTypes: any = ThemerProvider.childContextTypes;
+      public static contextTypes: any = ThemrProvider.childContextTypes;
 
-      public context: ThemerContext<any>;
+      public context: ThemrContext<any>;
       private theme: any;
 
-      constructor(props: TProps, context: ThemerContext<any>) {
+      constructor(props: TProps, context: ThemrContext<any>) {
         super(props, context);
         this.theme = computeTheme(themeFactory, mapPropsToTheme, props, context);
       }
@@ -55,7 +55,7 @@ function computeTheme(
   themeFactory: ThemeFactory<any, any, any>,
   mapPropsToTheme: (props: any) => any,
   props: { theme?: any },
-  context: ThemerContext<any>,
+  context: ThemrContext<any>,
 ) {
   const { vars, transformer } = context.themer;
   const customTheme = props.theme;

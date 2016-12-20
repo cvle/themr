@@ -10,20 +10,20 @@ import * as React from "react";
 
 import { Transformer } from "../../transformer";
 
-export interface ThemerContext<TVars> {
+export interface ThemrContext<TVars> {
   themer: {
     vars: TVars;
     transformer: Transformer;
   };
 }
 
-export interface ThemerProviderProps<TVars> {
+export interface ThemrProviderProps<TVars> {
   vars?: TVars;
   transformer: Transformer;
 }
 
-export class ThemerProvider<TVars> extends
-  React.Component<ThemerProviderProps<TVars>, {}> {
+export class ThemrProvider<TVars> extends
+  React.Component<ThemrProviderProps<TVars>, {}> {
   public static childContextTypes: any = {
     themer: React.PropTypes.object,
   };
@@ -31,18 +31,18 @@ export class ThemerProvider<TVars> extends
   private vars: TVars;
   private transformer: Transformer;
 
-  constructor(props: ThemerProviderProps<TVars>) {
+  constructor(props: ThemrProviderProps<TVars>) {
     super(props);
     this.vars = props.vars || {} as any;
     this.transformer = props.transformer;
   }
 
-  public componentWillReceiveProps(nextProps: ThemerProviderProps<TVars>): void {
+  public componentWillReceiveProps(nextProps: ThemrProviderProps<TVars>): void {
     this.vars = nextProps.vars || {} as any;
     this.transformer = nextProps.transformer;
   }
 
-  public getChildContext(): ThemerContext<TVars> {
+  public getChildContext(): ThemrContext<TVars> {
     return {
       themer: {
         vars: this.vars,

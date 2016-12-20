@@ -6,6 +6,6 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-export * from "./themerprovider";
+export * from "./themrProvider";
+export * from "./withTheme";
 export * from "./utils";
-export * from "./withtheme";

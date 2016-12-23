@@ -9,7 +9,7 @@
 /* tslint:disable:no-shadowed-variable */
 
 import { createTransformer } from "../src/transformer";
-import { createThemeFactory } from "../src/themefactory";
+import { createThemeFactory } from "../src/themeFactory";
 import { createRenderer } from "fela";
 import felaPlugin from "../src/plugins/fela";
 import callbackPlugin from "../src/plugins/callback";

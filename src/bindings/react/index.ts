@@ -8,4 +8,3 @@
 
 export * from "./themrProvider";
 export * from "./withTheme";
-export * from "./utils";

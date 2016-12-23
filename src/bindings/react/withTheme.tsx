@@ -9,8 +9,17 @@
 import * as React from "react";
 
 import { ThemrProvider, ThemrContext } from "./themrProvider";
-import { ThemeFactory, Transformer } from "../../index";
+import { Transformer, Rules } from "../../index";
+import { Options } from "../../transformer";
 import { mergeTheme } from "./utils";
+
+export type WithThemeProps<TThemeProps, TTheme> = Options & {
+  themeRules?: Rules<TThemeProps, TTheme, any>;
+};
+
+export type ThemeOptions<TProps, TThemeProps> = Options & {
+  mapProps?: (props: TProps) => TThemeProps,
+};
 
 export type DecoratorTarget<TProps> = React.StatelessComponent<TProps> | React.ComponentClass<TProps>;
 export type Decorator<TInner, TOuter> = (target: DecoratorTarget<TInner>) => React.ComponentClass<TOuter>;
@@ -19,14 +28,19 @@ export interface ThemeAttributes<TTheme> {
   theme?: TTheme;
 }
 
+let indexCounter = -10000;
+
 export function withTheme<
-  TProps extends { theme?: TTheme },
+  TProps extends WithThemeProps<TThemeProps, TTheme>,
   TTheme,
   TThemeProps>(
-  themeFactory: ThemeFactory<TTheme, TThemeProps, any>,
-  mapPropsToTheme?: (props: TProps) => TThemeProps,
-): Decorator<TProps, TProps> {
-  return (TargetComponent: DecoratorTarget<TProps>) => {
+  options: ThemeOptions<TProps, TThemeProps> = {},
+): Decorator<TProps & { theme?: TTheme }, TProps> {
+  if (!(options as any).index) {
+    (options as any).index = indexCounter++;
+  }
+  const index = indexCounter++;
+  return (TargetComponent: DecoratorTarget<TProps & { theme?: TTheme }>) => {
     const enhanced = class WithTheme extends React.Component<TProps, void> {
       public static contextTypes: any = ThemrProvider.childContextTypes;
 
@@ -35,15 +49,16 @@ export function withTheme<
 
       constructor(props: TProps, context: ThemrContext<any>) {
         super(props, context);
-        this.theme = computeTheme(themeFactory, mapPropsToTheme, props, context);
+        this.theme = computeTheme(props.themeRules, props, context, options);
       }
 
       public componentWillReceiveProps(nextProps: TProps): void {
-        this.theme = computeTheme(themeFactory, mapPropsToTheme, nextProps, this.context);
+        this.theme = computeTheme(nextProps.themeRules, nextProps, this.context, options);
       }
 
       public render(): React.ReactElement<any> {
-        return <TargetComponent {...this.props} theme={this.theme} />;
+        const {themeRules: _, ...rest} = (this.props as any);
+        return <TargetComponent {...rest} theme={this.theme} />;
       }
     };
 
@@ -52,14 +67,14 @@ export function withTheme<
 }
 
 function computeTheme(
-  themeFactory: ThemeFactory<any, any, any>,
-  mapPropsToTheme: (props: any) => any,
-  props: { theme?: any },
+  rules: Rules<any, any, any>,
+  props: any,
   context: ThemrContext<any>,
+  options: ThemeOptions<any, any>,
 ) {
+  props = options.mapProps ? options.mapProps(props) : {};
   const { vars, transformer } = context.themer;
   const customTheme = props.theme;
-  const themeProps = mapPropsToTheme ? mapPropsToTheme(props) : {};
-  const transformed = themeFactory(transformer, themeProps, vars);
+  const transformed = transformer(rules, options, props, vars);
   return customTheme ? mergeTheme(transformed, customTheme) : transformed;
 }

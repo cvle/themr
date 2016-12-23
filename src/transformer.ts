@@ -8,17 +8,27 @@
 
 import { Task, Plugin } from "./plugin";
 
-export type Transformer = (id: number, rules: () => any, options?: any, props?: any, vars?: any) => any;
+export type Rules<TProps, TTheme, TVars> = (props?: TProps, vars?: TVars) => TTheme;
+export type Transformer = (rules: Rules<any, any, any>, options?: Options, props?: any, vars?: any) => any;
+export type Options = {
+  name?: string;
+  index?: number;
+  global?: boolean;
+};
 
 export function createTransformer(...plugins: Plugin[]): Transformer {
+  // TODO: Use WeakMap.
+  const rulesRegistry: Array<Rules<any, any, any>> = [];
   const runtime: { [id: number]: any } = {};
-  return (id: number, rules: any, options = {}, props = {}, vars = {}) => {
+  return (rules: Rules<any, any, any>, options = {}, props = {}, vars = {}) => {
+    let id = rulesRegistry.indexOf(rules);
+    if (id < 0) { id = rulesRegistry.push(rules); }
     if (!runtime[id]) { runtime[id] = {}; }
     const task: Task = {
       id, options,
       props,
       vars,
-      rules: rules(props, vars),
+      rules: rules ? rules(props, vars) : {},
       runtime: runtime[id],
     };
     plugins.forEach((t) => t(task));

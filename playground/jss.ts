@@ -9,7 +9,7 @@
 /* tslint:disable:no-shadowed-variable */
 
 import { createTransformer } from "../src/transformer";
-import { createThemeFactory } from "../src/themefactory";
+import { createThemeFactory } from "../src/themeFactory";
 import jss from "jss";
 import jssPlugin from "../src/plugins/jss";
 import prefixerPlugin from "../src/plugins/inline-style-prefixer";

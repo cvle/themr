@@ -17,9 +17,9 @@ type Runtime = {
   cache: { [hash: number]: any };
 };
 
-export type Options = {};
+export type PluginOptions = {};
 
-const plugin: PluginFactory<Options> = (options = {}) =>
+const plugin: PluginFactory<PluginOptions> = (pluginOptions = {}) =>
   ({rules: {styles}, runtime}) => {
     if (!runtime[ns]) { runtime[ns] = { cache: {} } as Runtime; }
     if (!styles) { return; }

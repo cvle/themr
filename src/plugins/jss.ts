@@ -17,25 +17,30 @@ type Runtime = {
   cache: { [hash: number]: any };
 };
 
-export type Options = {
+export type PluginOptions = {
   jss?: JSS,
 };
 
-const defaults: () => Options = () => ({
+const defaults: () => PluginOptions = () => ({
   jss: defaultJSS,
 });
 
-const plugin: PluginFactory<Options> = (pluginOptions = defaults()) =>
+const plugin: PluginFactory<PluginOptions> = (pluginOptions = defaults()) =>
   ({rules, options, runtime}) => {
     if (!rules.classes) { return; }
     if (!runtime[ns]) { runtime[ns] = { cache: {} } as Runtime; }
     const jssRuntime: Runtime = runtime[ns];
     const {jss} = pluginOptions;
+    const jssOptions = {
+      meta: options.name,
+      index: options.index,
+      named: !options.global,
+    };
 
     const hash = createHash(JSON.stringify(rules.classes));
     let classNames = jssRuntime.cache[hash];
     if (!classNames) {
-      const sheet = jss.createStyleSheet(rules.classes, options[ns]);
+      const sheet = jss.createStyleSheet(rules.classes, jssOptions);
       sheet.attach();
       classNames = sheet.classes;
       jssRuntime.cache[hash] = classNames;

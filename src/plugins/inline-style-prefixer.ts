@@ -17,20 +17,20 @@ type Runtime = {
   cache: { [hash: number]: any };
 };
 
-export type Options = {
+export type PluginOptions = {
   prefixer?: any,
 };
 
-const defaults: () => Options = () => ({
+const defaults: () => PluginOptions = () => ({
   prefixer: new Prefixer(),
 });
 
-const plugin: PluginFactory<Options> = (options = defaults()) =>
+const plugin: PluginFactory<PluginOptions> = (pluginOptions = defaults()) =>
   ({rules: {styles}, runtime}) => {
     if (!runtime[ns]) { runtime[ns] = { cache: {} } as Runtime; }
     if (!styles) { return; }
     const pfxRuntime: Runtime = runtime[ns];
-    const { prefixer } = options;
+    const { prefixer } = pluginOptions;
     for (const name in styles) {
       const hash = createHash(JSON.stringify(styles[name]));
       let prefixed = pfxRuntime.cache[hash];

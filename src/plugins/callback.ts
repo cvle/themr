@@ -13,17 +13,17 @@ const ns = "fela";
 
 type Runtime = {};
 
-export type Options = {
+export type PluginOptions = {
   skip: string[];
 };
 
-const defaults: () => Options = () => ({
+const defaults: () => PluginOptions = () => ({
   skip: [],
 });
 
-const plugin: PluginFactory<Options> = (options = defaults()) =>
+const plugin: PluginFactory<PluginOptions> = (pluginOptions = defaults()) =>
   ({rules, props, vars, runtime}) => {
-    const {skip} = options;
+    const {skip} = pluginOptions;
     resolveCallback(rules, props, vars, skip);
   };
 

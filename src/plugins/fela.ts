@@ -18,20 +18,20 @@ type Runtime = {
   cache: { [hash: number]: string };
 };
 
-export type Options = {
+export type PluginOptions = {
   renderer?: Renderer;
 };
 
-const defaults: () => Options = () => ({
+const defaults: () => PluginOptions = () => ({
   renderer: createRenderer(),
 });
 
-const plugin: PluginFactory<Options> = (options = defaults()) =>
+const plugin: PluginFactory<PluginOptions> = (pluginOptions = defaults()) =>
   ({rules: {classes}, runtime}) => {
     if (!classes) { return; }
     if (!runtime[ns]) { runtime[ns] = { cache: {} } as Runtime; }
     const felaRuntime: Runtime = runtime[ns];
-    const {renderer} = options;
+    const {renderer} = pluginOptions;
 
     for (const name in classes) {
       const hash = createHash(JSON.stringify(classes[name]));

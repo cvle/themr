@@ -7,5 +7,4 @@
  */
 
 export * from "./plugin";
-export * from "./themeFactory";
 export * from "./transformer";
